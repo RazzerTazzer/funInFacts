@@ -1,7 +1,9 @@
 package com.example.funinfacts
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,7 +17,9 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.funinfacts.Data.funFactMap
 
@@ -25,35 +29,29 @@ import com.example.funinfacts.Data.funFactMap
 fun CategoryDetailScreen(category: String) {
     val funFact = funFactMap[category] ?: listOf("hello World")
 
-    val pagerState = rememberPagerState(pageCount = {funFact.size})
-
+    //val pagerState = rememberPagerState(pageCount = {funFact.size})
+    // Display 10 items
+    val pagerState = rememberPagerState(pageCount = {
+        10
+    })
     HorizontalPager(
         state = pagerState,
-        modifier = Modifier.fillMaxHeight(0.6f)
-            .fillMaxWidth(1f)
+        contentPadding = PaddingValues(horizontal = 64.dp), // Adjust padding to center the pages
+        pageSpacing = 40.dp, // Space between pages
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .background(color = Color.Red)
+            .fillMaxHeight(0.6f)
     ) { page ->
-        val item = funFact[page]
-        Box(
-            modifier = Modifier.fillMaxSize()
-                .padding(16.dp)
+        // Our page content
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color.Cyan)
         ) {
-            Card(
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 6.dp
-                ),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                ),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(6.dp)
-            ) {
-                Text(
-                    text = item,
-                    modifier = Modifier
-                        .padding(16.dp)
-                )
-            }
+            Text(
+                text = "Page: $page",
+                modifier = Modifier.fillMaxWidth()
+            )
         }
 
     }
