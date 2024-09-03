@@ -8,23 +8,32 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.funinfacts.ui.theme.FunInFactsTheme
+import com.example.funinfacts.CustomTopAppBar as CustomeTopAppBar
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val catgories = listOf("animals", "space", "history", "science", "geography", "technology", "food", "sports", "music", "art")
+        val categories = listOf("animals", "space", "history", "science", "geography", "technology", "food", "sports", "music", "art", "1", "2", "3", "4", "5")
 
         enableEdgeToEdge()
         setContent {
             FunInFactsTheme {
                 val navController = rememberNavController()
-                Scaffold(modifier = Modifier.fillMaxSize()
+                val currentScreen = remember { mutableStateOf("Category") }
+
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    topBar = {
+                        CustomeTopAppBar(screen = currentScreen.value, navController = navController)
+                    }
                 ) { innerPadding ->
                     NavHost(
                         navController = navController,
@@ -32,12 +41,15 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.padding(innerPadding)
                     ) {
                         composable("category_list") {
-                            CategoryListScreen(navController, catgories)
+                            currentScreen.value = "Category"
+                            CategoryListScreen(navController, categories)
                         }
                         composable("category_detail/{categoryName}") { backStackEntry ->
                             val categoryName = backStackEntry.arguments?.getString("categoryName")
                             if (categoryName != null) {
-                                CategoryDetailScreen(categoryName, navController)
+                                currentScreen.value = "CategoryDetail"
+                                currentScreen.value = categoryName
+                                CategoryDetailScreen(categoryName)
                             }
                         }
                     }

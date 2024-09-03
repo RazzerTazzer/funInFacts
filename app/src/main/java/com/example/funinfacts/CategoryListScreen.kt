@@ -58,12 +58,11 @@ fun CategoryListScreen(navController: NavController, catgories: List<String>) {
                     .size(150.dp)
                     .padding(6.dp),
                 onClick = {
-                    // Navigate to the detail screen with the selected category
                     navController.navigate("category_detail/$item")
                 }
             ) {
                 Box(
-                    contentAlignment = Alignment.Center, // Center the content
+                    contentAlignment = Alignment.Center,
                     modifier = Modifier.fillMaxSize()
 
                 ) {
