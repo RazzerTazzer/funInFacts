@@ -42,7 +42,6 @@ fun CategoryListScreen(navController: NavController, catgories: List<String>) {
         "art" to R.drawable.art,
         "technology" to R.drawable.technology
     )
-
     LazyVerticalGrid(columns = GridCells.Fixed(2)) {
 
         items(catgories) { item ->
