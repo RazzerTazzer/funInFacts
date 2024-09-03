@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,26 +27,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.funinfacts.Data.FunFactsMap
 
 
 @Composable
-fun CategoryListScreen(navController: NavController, catgories: List<String>) {
-    val categoryImageMap = mapOf(
-        "animals" to R.drawable.animal,
-        "space" to R.drawable.space,
-        "history" to R.drawable.history,
-        "science" to R.drawable.sience,
-        "geography" to R.drawable.geography,
-        "food" to R.drawable.food,
-        "sports" to R.drawable.sports,
-        "music" to R.drawable.music,
-        "art" to R.drawable.art,
-        "technology" to R.drawable.technology
-    )
+fun CategoryListScreen(navController: NavController, funFact: FunFactsMap?) {
+    val categories = funFact?.categories?.keys?.toList()?.sorted() ?: listOf("Hello World")
+
     LazyVerticalGrid(columns = GridCells.Fixed(2)) {
 
-        items(catgories) { item ->
-            val imageRes = categoryImageMap[item] ?: R.drawable.default_image
+        items(categories) { category ->
+            val imageRes = funFact?.categories?.get(category)?.imageId ?: R.drawable.default_image
 
             Card(
                 elevation = CardDefaults.cardElevation(
@@ -58,7 +50,7 @@ fun CategoryListScreen(navController: NavController, catgories: List<String>) {
                     .size(150.dp)
                     .padding(6.dp),
                 onClick = {
-                    navController.navigate("category_detail/$item")
+                    navController.navigate("category_detail/$category")
                 }
             ) {
                 Box(
@@ -81,7 +73,7 @@ fun CategoryListScreen(navController: NavController, catgories: List<String>) {
                     val offset = Offset(2.0f, 2.0f)
 
                     Text(
-                        text = item,
+                        text = category,
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,

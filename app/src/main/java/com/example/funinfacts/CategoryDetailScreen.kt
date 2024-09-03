@@ -29,14 +29,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.funinfacts.Data.funFactMap
+import com.example.funinfacts.Data.FunFactCategory
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CategoryDetailScreen(category: String) {
-    val funFact = funFactMap[category] ?: listOf("hello World")
-    val pagerState = rememberPagerState(pageCount = { funFact.size })
+fun CategoryDetailScreen(category: FunFactCategory?) {
+    val pagerState = rememberPagerState(pageCount = { category?.funFacts?.size ?: 0 })
     val context = LocalContext.current
 
 
@@ -75,7 +74,7 @@ fun CategoryDetailScreen(category: String) {
                         ) {
                             IconButton(
                                 onClick = {
-                                    shareText(context, funFact[page])
+                                    shareText(context, category?.funFacts?.get(page) ?: "hey")
                                 },
                                 modifier = Modifier
                                     .align(Alignment.TopEnd) // Position icon at the top right corner
@@ -87,14 +86,16 @@ fun CategoryDetailScreen(category: String) {
                                     tint = Color.White
                                 )
                             }
-                            Text(
-                                text = funFact[page],
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White,
-                                style = TextStyle(fontSize = 20.sp),
-                                modifier = Modifier.padding(10.dp) // Add padding around the Text
-                            )
+                            if (category != null) {
+                                Text(
+                                    text = category.funFacts[page],
+                                    textAlign = TextAlign.Center,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.White,
+                                    style = TextStyle(fontSize = 20.sp),
+                                    modifier = Modifier.padding(10.dp) // Add padding around the Text
+                                )
+                            }
                         }
                     }
                 }

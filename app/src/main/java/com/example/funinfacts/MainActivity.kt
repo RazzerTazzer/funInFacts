@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.funinfacts.Data.funFacts
 import com.example.funinfacts.ui.theme.FunInFactsTheme
 import com.example.funinfacts.CustomTopAppBar as CustomeTopAppBar
 
@@ -21,7 +22,7 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val categories = listOf("animals", "space", "history", "science", "geography", "technology", "food", "sports", "music", "art", "1", "2", "3", "4", "5")
+        val funFacts = funFacts
 
         enableEdgeToEdge()
         setContent {
@@ -42,14 +43,14 @@ class MainActivity : ComponentActivity() {
                     ) {
                         composable("category_list") {
                             currentScreen.value = "Category"
-                            CategoryListScreen(navController, categories)
+                            CategoryListScreen(navController, funFacts)
                         }
                         composable("category_detail/{categoryName}") { backStackEntry ->
                             val categoryName = backStackEntry.arguments?.getString("categoryName")
                             if (categoryName != null) {
                                 currentScreen.value = "CategoryDetail"
                                 currentScreen.value = categoryName
-                                CategoryDetailScreen(categoryName)
+                                CategoryDetailScreen(funFacts.categories[categoryName])
                             }
                         }
                     }
